@@ -1,0 +1,23 @@
+{
+    "name": "moriony/fine-proxy-client",
+    "type": "library",
+    "description":  "Simple api client for service fineproxy.org",
+    "keywords": ["proxy", "fineproxy", "client"],
+    "homepage": "https://github.com/moriony/fine-proxy-client",
+    "license":  "MIT",
+    "authors": [
+        {
+            "name": "Vitaliy Chesnokov",
+            "email": "demateus@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "kriswallsmith/buzz" : "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Moriony": "src"
+        }
+    }
+}
