@@ -6,6 +6,7 @@ use Buzz\Browser;
 use Buzz\Client\ClientInterface;
 use Moriony\FineProxy\Exception\AuthorizationError;
 use Moriony\FineProxy\Exception\UnexpectedHttpResponse;
+use Moriony\FineProxy\Exception\UnexpectedProxyType;
 
 class Client
 {
@@ -22,6 +23,13 @@ class Client
     protected $password;
     protected $browser;
 
+    protected static $proxyTypes = [
+        self::TYPE_SOCKS5_IP,
+        self::TYPE_HTTP_IP,
+        self::TYPE_HTTP_AUTH,
+        self::TYPE_SOCKS5_AUTH
+    ];
+
     public function __construct($login, $password, ClientInterface $client = null)
     {
         $this->login = $login;
@@ -29,8 +37,12 @@ class Client
         $this->browser = new Browser($client);
     }
 
-    protected function getProxyList($type)
+    public function getProxyList($type)
     {
+        if (!in_array($type, self::$proxyTypes)) {
+            throw new UnexpectedProxyType;
+        }
+
         $url = sprintf(self::URL_GET_PROXY_PATTERN, $type, $this->login, $this->password);
         /** @var \Buzz\Message\Response $response */
         $response = $this->browser->get($url);
