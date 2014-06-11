@@ -29,7 +29,7 @@ class Client
         $this->browser = new Browser($client);
     }
 
-    protected function getProxyList($type, $showAuth = false)
+    protected function getProxyList($type)
     {
         $url = sprintf(self::URL_GET_PROXY_PATTERN, $type, $this->login, $this->password);
         /** @var \Buzz\Message\Response $response */
@@ -44,38 +44,26 @@ class Client
         }
 
         $proxies = preg_split("/(\r\n|\n\r|\n|\r)/", trim($response->getContent()));
-        if ($showAuth) {
-            $proxies = $this->prepareAuthData($proxies);
-        }
         return $proxies;
     }
 
-    protected function prepareAuthData(array $proxies)
+    public function getHttpAuthProxies()
     {
-        $result = [];
-        foreach ($proxies as $proxy) {
-            $result[] = sprintf('%s:%s@%s', $this->login, $this->password, $proxy);
-        }
-        return $result;
+        return $this->getProxyList(self::TYPE_HTTP_AUTH);
     }
 
-    public function getHttpAuthProxies($showAuth = true)
+    public function getHttpIpProxies()
     {
-        return $this->getProxyList(self::TYPE_HTTP_AUTH, $showAuth);
+        return $this->getProxyList(self::TYPE_HTTP_IP);
     }
 
-    public function getHttpIpProxies($showAuth = false)
+    public function getSock5AuthProxies()
     {
-        return $this->getProxyList(self::TYPE_HTTP_IP, $showAuth);
+        return $this->getProxyList(self::TYPE_SOCKS5_AUTH);
     }
 
-    public function getSock5AuthProxies($showAuth = true)
+    public function getSock5IpProxies()
     {
-        return $this->getProxyList(self::TYPE_SOCKS5_AUTH, $showAuth);
-    }
-
-    public function getSock5IpProxies($showAuth = false)
-    {
-        return $this->getProxyList(self::TYPE_SOCKS5_IP, $showAuth);
+        return $this->getProxyList(self::TYPE_SOCKS5_IP);
     }
 }
