@@ -37,6 +37,28 @@ class Client
         $this->browser = new Browser($client);
     }
 
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
+    public function setLogin($login)
+    {
+        $this->login = $login;
+        return $this;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
     public function getProxyList($type)
     {
         if (!in_array($type, self::$proxyTypes)) {
