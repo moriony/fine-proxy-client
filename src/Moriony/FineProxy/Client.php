@@ -3,12 +3,12 @@
 namespace Moriony\FineProxy;
 
 use Buzz\Browser;
-use Buzz\Client\ClientInterface;
+use Buzz\Client\ClientInterface as BuzzClientInterface;
 use Moriony\FineProxy\Exception\AuthorizationError;
 use Moriony\FineProxy\Exception\UnexpectedHttpResponse;
 use Moriony\FineProxy\Exception\UnexpectedProxyType;
 
-class Client
+class Client implements ClientInterface
 {
     const URL_GET_PROXY_PATTERN = 'http://account.fineproxy.org/api/getproxy/?format=txt&type=%s&login=%s&password=%s';
 
@@ -30,7 +30,7 @@ class Client
         self::TYPE_SOCKS5_AUTH
     ];
 
-    public function __construct($login, $password, ClientInterface $client = null)
+    public function __construct($login, $password, BuzzClientInterface $client = null)
     {
         $this->login = $login;
         $this->password = $password;
@@ -42,21 +42,9 @@ class Client
         return $this->login;
     }
 
-    public function setLogin($login)
-    {
-        $this->login = $login;
-        return $this;
-    }
-
     public function getPassword()
     {
         return $this->password;
-    }
-
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        return $this;
     }
 
     public function getProxyList($type)

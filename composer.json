@@ -15,6 +15,9 @@
         "php": ">=5.3",
         "kriswallsmith/buzz" : "*"
     },
+    "require-dev": {
+        "zf1/zend-cache": "*"
+    },
     "autoload": {
         "psr-0": {
             "Moriony": "src"
