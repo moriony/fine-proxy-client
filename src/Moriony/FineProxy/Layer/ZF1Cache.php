@@ -23,7 +23,7 @@ class ZF1Cache implements ClientInterface
      * @param array $options
      * @throws \Moriony\FineProxy\Exception\InvalidCacheAdapter
      */
-    public function __construct(ClientInterface $client, $cacheAdapter, array $options)
+    public function __construct(ClientInterface $client, $cacheAdapter, array $options = array())
     {
         $validCache = $cacheAdapter instanceof \Zend_Cache_Backend_Interface ||
                       $cacheAdapter instanceof \Zend_Cache_Core;
