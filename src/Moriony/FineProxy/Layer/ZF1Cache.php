@@ -6,7 +6,7 @@ use Moriony\FineProxy\ClientInterface;
 use Moriony\FineProxy\Client;
 use Moriony\FineProxy\Exception\InvalidCacheAdapter;
 
-class ZF1Cache implements ClientInterface
+class ZF1Cache implements CacheLayerInterface
 {
     const OPT_LIFETIME = 'lifetime';
     const OPT_CACHE_KEY_PREFIX = 'cacheKeyPrefix';
@@ -57,7 +57,7 @@ class ZF1Cache implements ClientInterface
         return sprintf('%s_%s_%s', $this->cacheKeyPrefix, $this->client->getLogin(), $type);
     }
 
-    public function updateProxyList($type)
+    public function updateProxyListCache($type)
     {
         $proxies = $this->client->getProxyList($type);
         $this->cache->save($proxies, $this->prepareCacheKey($type), [], $this->lifeTime);
@@ -68,7 +68,7 @@ class ZF1Cache implements ClientInterface
     {
         $proxies = $this->cache->load($this->prepareCacheKey($type));
         if (!$proxies && $this->autoUpdate) {
-            $proxies = $this->updateProxyList($type);
+            $proxies = $this->updateProxyListCache($type);
         }
         if (!$proxies) {
             $proxies = array();
@@ -94,5 +94,13 @@ class ZF1Cache implements ClientInterface
     public function getSock5IpProxies()
     {
         return $this->getProxyList(Client::TYPE_SOCKS5_IP);
+    }
+
+    /**
+     * @return ClientInterface|LayerInterface|CacheLayerInterface
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }
